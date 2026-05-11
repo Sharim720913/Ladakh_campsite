@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, Ticket } from 'lucide-react';
+import { X, Check, Ticket } from 'lucide-react';
 
 const RegistrationModal = ({ event, isOpen, onClose }) => {
     const [step, setStep] = useState(1); // 1: Form, 2: Success
@@ -69,7 +69,7 @@ const RegistrationModal = ({ event, isOpen, onClose }) => {
                         ) : (
                             <div className="p-10 flex flex-col items-center text-center">
                                 <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-green-500 mb-6">
-                                    <CheckCircle2 size={40} />
+                                    <Check size={40} />
                                 </div>
                                 <h2 className="text-3xl font-bold text-gray-900 mb-2">You're In!</h2>
                                 <p className="text-gray-500 mb-8">We've sent the e-ticket for {event.title} to your email address. Prepare for adventure.</p>

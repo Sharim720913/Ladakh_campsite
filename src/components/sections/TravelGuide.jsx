@@ -1,77 +1,73 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Map, ShieldAlert, Wifi, Info } from 'lucide-react';
-
-const guideData = [
-    {
-        id: 1, title: 'Inner Line Permits (ILP)', icon: ShieldAlert,
-        content: 'Domestic tourists require an Inner Line Permit to visit protected areas like Pangong Lake, Nubra Valley, Tso Moriri, and Dah Hanu. Foreign nationals require a Protected Area Permit (PAP). Our platform auto-generates these permits upon booking certified homestays.'
-    },
-    {
-        id: 2, title: 'High Altitude Acclimatization', icon: Info,
-        content: 'Leh sits at 11,560 ft. It is strictly advised to take 48 hours of complete rest upon arrival. Keep yourself hydrated, avoid alcohol or smoking, and carry Diamox or consult a physician before travelling. Ignoring acclimatization leads to AMS (Acute Mountain Sickness).'
-    },
-    {
-        id: 3, title: 'Internet & Connectivity', icon: Wifi,
-        content: 'Prepaid SIM cards issued outside of J&K/Ladakh do not work here. You must carry a POSTPAID BSNL, Airtel, or Jio connection. Alternatively, you can purchase a local tourist prepaid SIM easily in Leh market by showing your ID.'
-    },
-    {
-        id: 4, title: 'Eco-Tourism Guidelines', icon: Map,
-        content: 'Ladakh has a fragile ecosystem. Say no to single-use plastics. Carry a reusable water bottle (refill points are available everywhere). Do not disturb wildlife, stay on marked trails, and strictly observe "pack it in, pack it out" ethics.'
-    }
-];
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Leaf, Droplets, Camera, MapPin, ArrowRight, HelpCircle } from 'lucide-react';
 
 const TravelGuide = () => {
-    const [activeId, setActiveId] = useState(1);
+    const tips = [
+        { title: 'Leave No Trace', desc: 'Preserve the fragile high-altitude ecosystem by removing all waste and respecting wildlife.', icon: Leaf },
+        { title: 'Water Wisdom', desc: 'Use local filtered sources instead of single-use plastics to protect mountain streams.', icon: Droplets },
+        { title: 'Respect Heritage', desc: 'Secure permits before entering monastic spaces and always ask before photography.', icon: Camera },
+        { title: 'Stay on Trails', desc: 'Erosion happens fast in the desert; stay on identified paths to protect the soil.', icon: MapPin },
+    ];
 
     return (
-        <section className="py-24 bg-brand-snow">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-32 relative overflow-hidden bg-white">
+            {/* Cinematic Background Layer */}
+            <div className="absolute inset-x-0 top-0 h-[600px] pointer-events-none z-0">
+                <img
+                    src="https://images.unsplash.com/photo-1544070282-591d487c6ce7?q=80&w=2070&auto=format&fit=crop"
+                    alt="Mountain River"
+                    className="w-full h-full object-cover opacity-10 grayscale"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
+            </div>
 
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">Essential Travel Guide</h2>
-                    <p className="text-lg text-gray-500 max-w-2xl mx-auto">Prepare for your high-altitude journey. A conscious traveler is a safe traveler.</p>
+            <div className="rec-container relative z-10">
+                <div className="max-w-3xl mb-20">
+                    <div className="flex items-center space-x-3 text-[var(--color-secondary)] font-black uppercase tracking-[0.3em] text-[10px] mb-6">
+                        <span className="w-12 h-[1px] bg-[var(--color-secondary)]"></span>
+                        <span>Stewardship Guide</span>
+                    </div>
+                    <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-[var(--color-text-primary)] mb-8">
+                        Explore with <span className="text-[var(--color-primary)]">Purpose.</span>
+                    </h2>
+                    <p className="text-xl text-[var(--color-text-secondary)] font-medium leading-relaxed">
+                        Ladakh is a high-altitude desert with a fragile ecosystem. Your journey should leave nothing but footprints and take nothing but memories.
+                    </p>
                 </div>
 
-                <div className="max-w-4xl mx-auto bg-white rounded-3xl p-4 md:p-8 border border-gray-100 shadow-xl shadow-gray-200/40">
-                    {guideData.map(item => (
-                        <div key={item.id} className="border-b border-gray-50 last:border-b-0">
-                            <button
-                                onClick={() => setActiveId(activeId === item.id ? null : item.id)}
-                                className="w-full flex items-center justify-between py-6 px-4 hover:bg-gray-50 transition-colors rounded-2xl group"
-                            >
-                                <div className="flex items-center space-x-4">
-                                    <div className={`p-3 rounded-xl transition-colors ${activeId === item.id ? 'bg-brand-teal text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-brand-teal/10 group-hover:text-brand-teal'}`}>
-                                        <item.icon size={20} />
-                                    </div>
-                                    <h3 className={`font-bold text-lg md:text-xl transition-colors text-left ${activeId === item.id ? 'text-brand-teal' : 'text-gray-900'}`}>
-                                        {item.title}
-                                    </h3>
-                                </div>
-                                <motion.div animate={{ rotate: activeId === item.id ? 180 : 0 }}>
-                                    <ChevronDown size={24} className={activeId === item.id ? 'text-brand-teal' : 'text-gray-400'} />
-                                </motion.div>
-                            </button>
-
-                            <AnimatePresence>
-                                {activeId === item.id && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="overflow-hidden"
-                                    >
-                                        <p className="p-4 md:px-20 md:pb-8 text-gray-600 leading-relaxed">
-                                            {item.content}
-                                        </p>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {tips.map((tip, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="bg-[var(--color-bg-offset)] p-10 rounded-2xl border border-gray-100/50 hover:border-[var(--color-secondary)]/30 transition-all duration-500 shadow-sm hover:shadow-xl group"
+                        >
+                            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-[var(--color-primary)] group-hover:text-white transition-all duration-500">
+                                <tip.icon size={24} />
+                            </div>
+                            <h3 className="text-xl font-black text-[var(--color-text-primary)] mb-3">{tip.title}</h3>
+                            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{tip.desc}</p>
+                        </motion.div>
                     ))}
                 </div>
 
+                <div className="mt-24 p-12 bg-[var(--color-primary)] rounded-[2rem] text-white relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+                    <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+                        <div className="max-w-xl">
+                            <h4 className="text-3xl font-black tracking-tight mb-4">Official Territory Briefing</h4>
+                            <p className="text-white/80 text-sm leading-relaxed font-medium">
+                                Download the complete wilderness stewardship manual for the 2026 season. Includes safety protocols, monastic etiquette, and high-altitude health guides.
+                            </p>
+                        </div>
+                        <button className="bg-[var(--color-secondary)] text-white px-10 py-5 rounded-xl font-black uppercase tracking-widest text-xs hover:shadow-2xl transition-all flex items-center shadow-lg">
+                            Get Official Guide <ArrowRight className="ml-3" size={16} />
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
     );

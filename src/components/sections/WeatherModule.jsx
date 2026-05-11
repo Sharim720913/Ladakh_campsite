@@ -1,103 +1,61 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CloudSnow, Wind, Thermometer, AlertTriangle, AlertCircle, Mountain } from 'lucide-react';
+import { Sun, Cloud, Thermometer, Wind, Droplets, MapPin, ExternalLink, Calendar } from 'lucide-react';
 
 const WeatherModule = () => {
     return (
-        <section className="py-20 relative bg-brand-teal text-white overflow-hidden">
-            {/* Background Decor */}
-            <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none">
-                <div className="absolute top-20 right-20 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl" />
-            </div>
+        <section className="py-24 bg-[var(--color-bg-base)]">
+            <div className="rec-container">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-12">
-
-                    {/* Info Section */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="w-full lg:w-1/2"
-                    >
-                        <div className="flex items-center space-x-2 text-brand-beige mb-4 uppercase tracking-widest text-sm font-bold">
-                            <CloudSnow className="w-5 h-5" />
-                            <span>High Altitude Weather</span>
+                    {/* Primary Weather Card */}
+                    <div className="lg:col-span-2 rec-card p-10 bg-gradient-to-br from-blue-50/50 to-white flex flex-col md:flex-row items-center gap-10">
+                        <div className="text-center md:text-left">
+                            <div className="flex items-center space-x-2 text-[var(--color-primary)] font-bold text-xs uppercase tracking-widest mb-4">
+                                <MapPin size={14} />
+                                <span>Current Conditions: Leh, Ladakh</span>
+                            </div>
+                            <div className="flex items-center justify-center md:justify-start space-x-6 mb-4">
+                                <div className="text-7xl font-extrabold text-[var(--color-text-primary)] tracking-tighter">22°C</div>
+                                <Sun size={64} className="text-amber-500 animate-pulse" />
+                            </div>
+                            <p className="text-xl font-bold text-[var(--color-text-primary)] mb-2">Clear Skies & High UV</p>
+                            <p className="text-[var(--color-text-secondary)] text-sm font-medium">Updated: 10 mins ago • Official Bureau Data</p>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6">Unpredictable Beauty</h2>
-                        <p className="text-xl text-teal-100 mb-8 font-light">
-                            Stay safe and prepared with real-time weather analytics. Road conditions, snowfall alerts, and altitude sickness warnings are continuously updated.
+
+                        <div className="h-px md:h-32 w-full md:w-px bg-[var(--color-border)]" />
+
+                        <div className="grid grid-cols-2 gap-8 flex-grow">
+                            {[
+                                { icon: Thermometer, label: 'High/Low', val: '24° / 8°' },
+                                { icon: Wind, label: 'Wind Speed', val: '12 km/h' },
+                                { icon: Droplets, label: 'Humidity', val: '15%' },
+                                { icon: Calendar, label: 'Visibility', val: '10 km+' },
+                            ].map((stat, i) => (
+                                <div key={i} className="flex items-center space-x-4">
+                                    <div className="p-3 bg-white border border-[var(--color-border)] rounded-lg text-[var(--color-primary)]">
+                                        <stat.icon size={18} />
+                                    </div>
+                                    <div>
+                                        <p className="rec-label text-[10px]">{stat.label}</p>
+                                        <p className="font-bold text-[var(--color-text-primary)]">{stat.val}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Safety Advisory Link Card */}
+                    <div className="rec-card p-10 bg-[var(--color-primary)] text-white flex flex-col justify-center">
+                        <h3 className="text-2xl font-bold mb-4 tracking-tight leading-none">Travel Advisory</h3>
+                        <p className="text-blue-100 text-sm leading-relaxed mb-8">
+                            Extreme altitude warnings are in effect for Khardung La. Ensure 48 hours of acclimatization in Leh before ascending.
                         </p>
+                        <button className="bg-white text-[var(--color-primary)] px-6 py-4 rounded-md font-bold uppercase tracking-widest text-xs hover:bg-blue-50 transition-all flex items-center justify-center">
+                            View Safety Protocol <ExternalLink size={16} className="ml-2" />
+                        </button>
+                    </div>
 
-                        <div className="space-y-4">
-                            <div className="flex items-start space-x-3 bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/10">
-                                <AlertTriangle className="text-amber-400 w-6 h-6 flex-shrink-0 mt-0.5" />
-                                <div>
-                                    <h4 className="font-semibold text-white">Road Alert: Khardung La</h4>
-                                    <p className="text-teal-100 text-sm">Light snowfall reported. Chains required for 2WD vehicles. Pass closes at 4:00 PM.</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start space-x-3 bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/10">
-                                <Mountain className="text-brand-glacier w-6 h-6 flex-shrink-0 mt-0.5" />
-                                <div>
-                                    <h4 className="font-semibold text-white">Altitude Advisory</h4>
-                                    <p className="text-teal-100 text-sm">Pangong Lake is at 14,270 ft. 48-hour acclimatization in Leh is mandatory before travel.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Weather Widget */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="w-full lg:w-1/2 flex justify-center lg:justify-end"
-                    >
-                        <div className="w-full max-w-md bg-white text-gray-800 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-teal to-brand-glacier" />
-
-                            <div className="flex justify-between items-center mb-8">
-                                <div>
-                                    <h3 className="text-2xl font-bold">Leh, Ladakh</h3>
-                                    <p className="text-gray-500">Currently, Mostly Sunny</p>
-                                </div>
-                                <div className="text-5xl font-extrabold text-brand-teal tracking-tighter">
-                                    12°<span className="text-2xl font-normal text-gray-400 align-top">C</span>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 mb-8">
-                                <div className="bg-gray-50 rounded-2xl p-4 flex items-center space-x-3">
-                                    <Wind className="text-blue-400 w-8 h-8" />
-                                    <div>
-                                        <span className="block text-sm text-gray-500">Wind</span>
-                                        <span className="font-bold">14 km/h</span>
-                                    </div>
-                                </div>
-                                <div className="bg-gray-50 rounded-2xl p-4 flex items-center space-x-3">
-                                    <Thermometer className="text-rose-400 w-8 h-8" />
-                                    <div>
-                                        <span className="block text-sm text-gray-500">Feels Like</span>
-                                        <span className="font-bold">9°C</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="border-t border-gray-100 pt-6">
-                                <h4 className="font-semibold mb-4 text-sm uppercase tracking-wide text-gray-400">Next 4 Days</h4>
-                                <div className="flex justify-between">
-                                    {['Mon', 'Tue', 'Wed', 'Thu'].map((day, i) => (
-                                        <div key={i} className="flex flex-col items-center space-y-2">
-                                            <span className="text-sm font-medium">{day}</span>
-                                            {i % 2 === 0 ? <CloudSnow className="w-6 h-6 text-brand-glacier" /> : <Wind className="w-6 h-6 text-gray-400" />}
-                                            <span className="font-bold">{10 - i}°</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
                 </div>
             </div>
         </section>

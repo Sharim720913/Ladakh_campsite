@@ -1,100 +1,132 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, AlertCircle, HeartPulse, ShieldAlert, X } from 'lucide-react';
+import { Phone, AlertCircle, HeartPulse, ShieldAlert, X, Mountain } from 'lucide-react';
 
 const SOSModule = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <>
+            {/* SOS Floating Trigger */}
             <motion.button
                 onClick={() => setIsOpen(true)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="fixed bottom-6 right-6 z-50 bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-2xl flex items-center justify-center border-4 border-red-200/50"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="fixed bottom-10 right-10 z-[100] w-16 h-16 bg-red-600 rounded-2xl shadow-[0_0_40px_rgba(220,38,38,0.4)] flex items-center justify-center text-white border border-red-500/50 group overflow-hidden"
             >
-                <AlertCircle size={32} />
+                <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
+                <AlertCircle size={28} className="relative z-10 group-hover:text-red-600 transition-colors" />
+                <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className="absolute inset-0 border-4 border-red-400/30 rounded-2xl"
+                />
             </motion.button>
 
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-                    >
+                    <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
+                        {/* Backdrop */}
                         <motion.div
-                            initial={{ scale: 0.9, y: 20 }}
-                            animate={{ scale: 1, y: 0 }}
-                            exit={{ scale: 0.9, y: 20 }}
-                            className="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsOpen(false)}
+                            className="absolute inset-0 bg-brand-obsidian/95 backdrop-blur-2xl"
+                        />
+
+                        {/* Modal */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative w-full max-w-2xl glass-dark rounded-[3rem] border border-white/5 overflow-hidden shadow-2xl"
                         >
-                            <div className="bg-red-600 p-6 flex justify-between items-center text-white">
-                                <div className="flex items-center space-x-3">
-                                    <AlertCircle size={28} />
-                                    <h2 className="text-2xl font-bold">Emergency SOS</h2>
+                            {/* Header */}
+                            <div className="p-10 border-b border-white/5 flex justify-between items-center bg-gradient-to-r from-red-950/20 to-transparent">
+                                <div className="flex items-center space-x-4">
+                                    <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-red-600/20">
+                                        <AlertCircle size={24} />
+                                    </div>
+                                    <div>
+                                        <h2 className="font-serif text-3xl text-white tracking-tight leading-none mb-1">Emergency SOS</h2>
+                                        <p className="text-[10px] text-red-500 font-black uppercase tracking-[0.3em]">Himalayan Response System</p>
+                                    </div>
                                 </div>
-                                <button onClick={() => setIsOpen(false)} className="hover:bg-red-700 p-2 rounded-full transition-colors">
-                                    <X size={24} />
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="w-12 h-12 rounded-full border border-white/5 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 transition-all"
+                                >
+                                    <X size={20} />
                                 </button>
                             </div>
 
-                            <div className="p-6 md:p-8 space-y-6">
+                            <div className="p-10 space-y-10">
 
-                                {/* Critical Contacts */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <a href="tel:112" className="flex items-center space-x-4 bg-red-50 p-4 rounded-2xl hover:bg-red-100 transition-colors border border-red-100">
-                                        <div className="bg-red-500 text-white p-3 rounded-full"><Phone size={24} /></div>
-                                        <div>
-                                            <h4 className="font-bold text-gray-900">112</h4>
-                                            <p className="text-sm text-gray-500">National Emergency</p>
+                                {/* Critical Lifeline Contacts */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <a href="tel:112" className="group relative glass-dark p-6 rounded-3xl border-white/5 hover:border-red-500/30 transition-all flex items-center space-x-6 overflow-hidden">
+                                        <div className="absolute inset-0 bg-red-600/5 translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-700" />
+                                        <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center text-white relative z-10"><Phone size={20} /></div>
+                                        <div className="relative z-10">
+                                            <h4 className="font-serif text-2xl text-white">112</h4>
+                                            <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">National Response</p>
                                         </div>
                                     </a>
-                                    <a href="tel:108" className="flex items-center space-x-4 bg-red-50 p-4 rounded-2xl hover:bg-red-100 transition-colors border border-red-100">
-                                        <div className="bg-red-500 text-white p-3 rounded-full"><HeartPulse size={24} /></div>
-                                        <div>
-                                            <h4 className="font-bold text-gray-900">108</h4>
-                                            <p className="text-sm text-gray-500">Ambulance / Medical</p>
+                                    <a href="tel:108" className="group relative glass-dark p-6 rounded-3xl border-white/5 hover:border-red-500/30 transition-all flex items-center space-x-6 overflow-hidden">
+                                        <div className="absolute inset-0 bg-red-600/5 translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-700" />
+                                        <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-red-500 relative z-10"><HeartPulse size={20} /></div>
+                                        <div className="relative z-10">
+                                            <h4 className="font-serif text-2xl text-white">108</h4>
+                                            <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Ambulance Hub</p>
                                         </div>
                                     </a>
                                 </div>
 
-                                {/* Local Contacts */}
+                                {/* Local Rescue Matrix */}
                                 <div>
-                                    <h3 className="font-bold text-gray-900 mb-3 flex items-center"><ShieldAlert size={18} className="mr-2 text-brand-teal" /> Local Rescue Centers</h3>
-                                    <div className="bg-gray-50 rounded-2xl p-4 divide-y divide-gray-100">
-                                        <div className="flex justify-between py-2">
-                                            <span className="font-medium text-gray-700">Leh SNM Hospital</span>
-                                            <a href="tel:01982252014" className="text-brand-teal font-semibold">01982-252014</a>
-                                        </div>
-                                        <div className="flex justify-between py-2">
-                                            <span className="font-medium text-gray-700">Police Control Room Leh</span>
-                                            <a href="tel:01982252200" className="text-brand-teal font-semibold">01982-252200</a>
-                                        </div>
-                                        <div className="flex justify-between py-2">
-                                            <span className="font-medium text-gray-700">Disaster Management</span>
-                                            <a href="tel:01982255530" className="text-brand-teal font-semibold">01982-255530</a>
-                                        </div>
+                                    <h3 className="text-white font-serif text-lg mb-6 flex items-center gap-3">
+                                        <ShieldAlert size={20} className="text-brand-gold" />
+                                        Regional Command
+                                    </h3>
+                                    <div className="space-y-3">
+                                        {[
+                                            { name: 'Leh SNM Hospital', num: '01982-252014' },
+                                            { name: 'Police Control Center', num: '01982-252200' },
+                                            { name: 'Disaster Support', num: '01982-255530' }
+                                        ].map((center, i) => (
+                                            <div key={i} className="flex justify-between items-center p-4 bg-white/[0.02] border border-white/5 rounded-2xl group hover:bg-white/[0.04] transition-all">
+                                                <span className="text-slate-400 group-hover:text-white transition-colors">{center.name}</span>
+                                                <a href={`tel:${center.num.replace('-', '')}`} className="font-sans text-brand-gold font-bold tracking-wider hover:underline">{center.num}</a>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* Altitude Sickness Guidance */}
-                                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
-                                    <h3 className="font-bold text-amber-900 mb-2 flex items-center">Altitude Sickness (AMS) Protocol</h3>
-                                    <p className="text-sm text-amber-800 mb-3">If you experience headache, nausea, shortness of breath, or extreme fatigue:</p>
-                                    <ul className="list-disc pl-5 text-sm text-amber-800 space-y-1">
-                                        <li>Stop ascending immediately. Descend if symptoms worsen.</li>
-                                        <li>Hydrate constantly with warm water.</li>
-                                        <li>Rest and avoid sudden physical exertion.</li>
-                                        <li>Administer supplemental oxygen if available.</li>
-                                        <li>Seek medical help from local army camps or hospitals immediately.</li>
+                                {/* AMS Protocol Card */}
+                                <div className="p-8 rounded-[2rem] bg-amber-500/5 border border-amber-500/10 relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10"><Mountain size={60} /></div>
+                                    <h3 className="font-serif text-xl text-amber-500 mb-4 flex items-center gap-3">
+                                        Altitude Sickness (AMS) Protocol
+                                    </h3>
+                                    <ul className="space-y-3">
+                                        {[
+                                            'Cease ascent immediately upon onset of symptoms.',
+                                            'Descend to <9,000 ft if severity increases.',
+                                            'Hydrate with warm fluids, avoid physical exertion.',
+                                            'Seek immediate assistance at the nearest Army base.'
+                                        ].map((step, i) => (
+                                            <li key={i} className="flex items-start space-x-3 text-slate-400 text-sm font-light">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-amber-500/40 mt-1.5 flex-shrink-0" />
+                                                <span>{step}</span>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
 
                             </div>
                         </motion.div>
-                    </motion.div>
+                    </div>
                 )}
             </AnimatePresence>
         </>

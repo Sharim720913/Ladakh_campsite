@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar as CalendarIcon, Users, CreditCard, CheckCircle2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, CreditCard, Check } from 'lucide-react';
 import { useTourism } from '../../context/TourismContext';
 
 const BookingCard = ({ homestayId, price }) => {
@@ -24,7 +24,7 @@ const BookingCard = ({ homestayId, price }) => {
                 className="bg-brand-teal text-white rounded-3xl p-8 shadow-2xl flex flex-col items-center text-center sticky top-32"
             >
                 <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-6">
-                    <CheckCircle2 size={32} className="text-white" />
+                    <Check size={32} className="text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Booking Confirmed</h3>
                 <p className="text-teal-100 mb-6">Your Inner Line Permits are auto-processing.</p>

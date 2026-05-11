@@ -1,62 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Quote, Star } from 'lucide-react';
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Star, Quote, ArrowRight, ShieldCheck, User } from 'lucide-react';
 
 const testimonials = [
-    { id: 1, name: 'Sarah Jenkins', loc: 'UK', text: 'The Homestay experience in Turtuk was life-changing. True Himalayan hospitality.', rating: 5 },
-    { id: 2, name: 'Raj Kumar', loc: 'India', text: 'Booking inner line permits through the platform saved us days of hassle.', rating: 5 },
-    { id: 3, name: 'Elena Rostova', loc: 'Russia', text: 'The Pangong eco-campsite had the most breathtaking view of the milky way.', rating: 5 },
+    {
+        name: "David Chen",
+        role: "Backcountry Trekker",
+        text: "The official permit system through Ladakh Explorer was seamless. It's rare to find such high-quality facility data for such a remote region.",
+        rating: 5
+    },
+    {
+        name: "Sarah Miller",
+        role: "Cultural Historian",
+        text: "Staying at the verified heritage homestays changed my perspective. The stewardship guidelines helped us explore with respect.",
+        rating: 5
+    }
 ];
 
 const TestimonialSlider = () => {
-    const [index, setIndex] = useState(0);
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-        }, 5000);
-        return () => clearInterval(timer);
-    }, []);
-
     return (
-        <section className="py-24 bg-brand-teal text-white relative overflow-hidden">
-            {/* Decor */}
-            <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-                <Quote className="mx-auto w-16 h-16 text-brand-teal-light mb-8 opacity-50" />
-                <div className="h-48 relative">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.5 }}
-                            className="absolute inset-0 flex flex-col items-center"
-                        >
-                            <p className="text-2xl md:text-3xl font-medium leading-relaxed italic mb-8">
-                                "{testimonials[index].text}"
-                            </p>
-                            <div className="flex space-x-1 mb-3">
-                                {[...Array(testimonials[index].rating)].map((_, i) => (
-                                    <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
-                                ))}
+        <section className="py-24 bg-[var(--color-bg-base)]">
+            <div className="rec-container">
+                <div className="flex items-center space-x-3 text-[var(--color-primary)] font-bold uppercase tracking-widest text-[10px] mb-8">
+                    <ShieldCheck size={16} />
+                    <span>Verified Reviews</span>
+                </div>
+
+                <Swiper
+                    modules={[Navigation, Pagination, Autoplay]}
+                    spaceBetween={30}
+                    slidesPerView={1}
+                    breakpoints={{
+                        1024: { slidesPerView: 2 },
+                    }}
+                    pagination={{ clickable: true }}
+                    autoplay={{ delay: 6000 }}
+                    className="testimonals-swiper !pb-20"
+                >
+                    {testimonials.map((t, i) => (
+                        <SwiperSlide key={i}>
+                            <div className="rec-card p-12 bg-gray-50 border-none shadow-none flex flex-col h-full">
+                                <Quote className="text-[var(--color-primary)] opacity-20 mb-8" size={60} />
+                                <p className="text-xl font-medium text-[var(--color-text-primary)] leading-relaxed mb-10 flex-grow italic">
+                                    "{t.text}"
+                                </p>
+                                <div className="flex items-center justify-between pt-8 border-t border-gray-200">
+                                    <div className="flex items-center space-x-4">
+                                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-[var(--color-primary)] border border-gray-200 shadow-sm">
+                                            <User size={20} />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-[var(--color-text-primary)]">{t.name}</h4>
+                                            <p className="text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-widest">{t.role}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex text-amber-500">
+                                        {[...Array(t.rating)].map((_, i) => <Star key={i} size={14} className="fill-current" />)}
+                                    </div>
+                                </div>
                             </div>
-                            <h4 className="font-bold text-lg">{testimonials[index].name}</h4>
-                            <span className="text-teal-200 text-sm">{testimonials[index].loc}</span>
-                        </motion.div>
-                    </AnimatePresence>
-                </div>
-                {/* Dots */}
-                <div className="flex justify-center space-x-3 mt-8">
-                    {testimonials.map((_, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => setIndex(idx)}
-                            className={`w-3 h-3 rounded-full transition-colors ${idx === index ? 'bg-white' : 'bg-white/30'}`}
-                        />
+                        </SwiperSlide>
                     ))}
-                </div>
+                </Swiper>
             </div>
         </section>
     );

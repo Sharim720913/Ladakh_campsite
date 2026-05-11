@@ -1,69 +1,95 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
-import { MapPin, Navigation as NavIcon } from 'lucide-react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { motion } from 'framer-motion';
+import { MapPin, ArrowRight, Star } from 'lucide-react';
 
-// Import swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/effect-fade';
 
 const destinations = [
-    { id: 1, name: 'Pangong Lake', desc: 'Highest saltwater lake in the world, famous for its ever-changing hues.', img: '/assets/pangong_lake.png', tag: 'Must Visit' },
-    { id: 2, name: 'Nubra Valley', desc: 'The valley of flowers, home to the double-humped Bactrian camels.', img: '/assets/nubra_valley.png', tag: 'Adventure' },
-    { id: 3, name: 'Khardung La', desc: 'Once the highest motorable road in the world. High altitude pass.', img: 'https://images.unsplash.com/photo-1626245137537-b95ce3e1bb45?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', tag: 'Extreme' },
+    { id: 1, name: 'Pangong Lake', loc: 'Changtang Region', tag: 'Must See', img: 'https://images.unsplash.com/photo-1581791538302-03537b9c97bf?q=80&w=2070&auto=format&fit=crop', rating: 4.9 },
+    { id: 2, name: 'Nubra Valley', loc: 'Northern Frontier', tag: 'Adventure', img: 'https://images.unsplash.com/photo-1544070282-591d487c6ce7?q=80&w=2070&auto=format&fit=crop', rating: 4.8 },
+    { id: 3, name: 'Leh City', loc: 'Capitol District', tag: 'Culture', img: 'https://images.unsplash.com/photo-1524443169398-9aa1ceab67d3?q=80&w=2070&auto=format&fit=crop', rating: 5.0 },
+    { id: 4, name: 'Zanskar Range', loc: 'Western Ladakh', tag: 'Extreme', img: 'https://images.unsplash.com/photo-1626245137537-b95ce3e1bb45?q=80&w=2070&auto=format&fit=crop', rating: 4.7 }
 ];
 
 const DestinationsSlider = () => {
     return (
-        <section className="py-24 bg-brand-snow relative overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                    <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">Trending Destinations</h2>
-                    <p className="text-lg text-gray-500 max-w-2xl">Swipe through the most incredible high-altitude gems the Himalayas have to offer.</p>
-                </motion.div>
-            </div>
+        <section className="py-24 bg-[var(--color-bg-offset)]">
+            <div className="rec-container">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <h2 className="rec-heading-2 text-4xl">Featured Destinations</h2>
+                        <p className="text-[var(--color-text-secondary)] mt-2 font-medium">Explore the most visited federal and heritage sites in the territory.</p>
+                    </div>
+                    <div className="flex space-x-4">
+                        <div className="swiper-nav-prev cursor-pointer bg-white border border-[var(--color-border)] p-3 rounded-full hover:bg-gray-50 active:scale-95 shadow-sm transition-all text-[var(--color-primary)]">
+                            <ArrowRight className="rotate-180" size={20} />
+                        </div>
+                        <div className="swiper-nav-next cursor-pointer bg-white border border-[var(--color-border)] p-3 rounded-full hover:bg-gray-50 active:scale-95 shadow-sm transition-all text-[var(--color-primary)]">
+                            <ArrowRight size={20} />
+                        </div>
+                    </div>
+                </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative h-[500px]">
-                <Swiper
-                    modules={[Navigation, Pagination, Autoplay, EffectFade]}
-                    spaceBetween={30}
-                    slidesPerView={1}
-                    breakpoints={{
-                        768: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 }
-                    }}
-                    navigation
-                    pagination={{ clickable: true }}
-                    autoplay={{ delay: 3000, disableOnInteraction: false }}
-                    className="h-full !pb-14"
-                >
-                    {destinations.map(dest => (
-                        <SwiperSlide key={dest.id}>
-                            <div className="w-full h-full rounded-3xl overflow-hidden relative group cursor-grab active:cursor-grabbing border-4 border-white shadow-xl">
-                                <div className="absolute inset-0 bg-gray-900/40 group-hover:bg-gray-900/20 transition-colors z-10" />
-                                <img src={dest.img} alt={dest.name} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
-
-                                <div className="absolute top-6 right-6 z-20 bg-white/90 backdrop-blur text-brand-teal text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg">
-                                    {dest.tag}
-                                </div>
-
-                                <div className="absolute bottom-0 left-0 right-0 p-8 z-20 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent translate-y-4 group-hover:translate-y-0 transition-transform">
-                                    <h3 className="text-3xl font-extrabold text-white mb-2">{dest.name}</h3>
-                                    <p className="text-gray-300 text-sm mb-4 line-clamp-2">{dest.desc}</p>
-
-                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button className="flex items-center text-brand-glacier font-bold hover:text-white transition-colors">
-                                            <NavIcon size={16} className="mr-2" /> Explore Location
-                                        </button>
+                <div className="relative">
+                    <Swiper
+                        modules={[Navigation, Pagination, Autoplay]}
+                        spaceBetween={30}
+                        slidesPerView={1}
+                        navigation={{
+                            prevEl: '.swiper-nav-prev',
+                            nextEl: '.swiper-nav-next',
+                        }}
+                        breakpoints={{
+                            640: { slidesPerView: 2 },
+                            1024: { slidesPerView: 3 },
+                        }}
+                        loop={true}
+                        autoplay={{ delay: 5000 }}
+                        className="destinations-swiper !pb-12"
+                    >
+                        {destinations.map((dest) => (
+                            <SwiperSlide key={dest.id}>
+                                <motion.div
+                                    whileHover={{ y: -8 }}
+                                    className="rec-card h-full flex flex-col group cursor-pointer"
+                                >
+                                    <div className="relative h-64 overflow-hidden">
+                                        <img src={dest.img} alt={dest.name} className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
+                                        <div className="absolute top-4 left-4">
+                                            <span className="bg-white/90 backdrop-blur-sm text-[var(--color-text-primary)] text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md border border-[var(--color-border)] shadow-sm">
+                                                {dest.tag}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
+                                    <div className="p-8 flex flex-col flex-grow">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div>
+                                                <h3 className="text-xl font-bold text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">{dest.name}</h3>
+                                                <div className="flex items-center text-[var(--color-text-secondary)] text-sm mt-1">
+                                                    <MapPin size={14} className="mr-1 text-[var(--color-primary)]" />
+                                                    {dest.loc}
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center space-x-1 bg-blue-50 text-[var(--color-primary)] px-2 py-1 rounded-md border border-blue-100">
+                                                <Star size={12} className="fill-[var(--color-primary)]" />
+                                                <span className="text-xs font-black">{dest.rating}</span>
+                                            </div>
+                                        </div>
+                                        <div className="mt-auto pt-6 border-t border-gray-100 flex items-center justify-between">
+                                            <span className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-widest flex items-center group-hover:translate-x-2 transition-transform">
+                                                Discover Facility <ArrowRight className="ml-2" size={14} />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
             </div>
         </section>
     );

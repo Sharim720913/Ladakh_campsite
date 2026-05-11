@@ -1,196 +1,114 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, Tent, Calendar, Clock, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import heroYakLakeImg from '../../hero_yak_lake.jpg';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Search, Calendar, MapPin, Tent, Mountain, Compass, Home, ArrowRight } from 'lucide-react';
 
 const HeroSection = () => {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [activeCategory, setActiveCategory] = useState('All');
-    const dropdownRef = useRef(null);
-    const navigate = useNavigate();
+    const [activeCategory, setActiveCategory] = useState('Campsites');
 
-    // Mock search suggestions
-    const suggestions = [
-        { title: 'Tsomgo Heritage Home', type: 'Homestay', icon: MapPin, path: '/homestays' },
-        { title: 'Pangong Lake View Camp', type: 'Campsite', icon: Tent, path: '/campsites' },
-        { title: 'Hemis Festival Ticket', type: 'Event', icon: Calendar, path: '/events/hemis-festival' },
-        { title: 'Khardung La Cycling', type: 'Activity', icon: Clock, path: '/explore' },
+    const categories = [
+        { id: 'Campsites', icon: Tent, label: 'Campsites' },
+        { id: 'Homestays', icon: Home, label: 'Homestays' },
+        { id: 'Festivals', icon: Calendar, label: 'Festivals' },
+        { id: 'Explore', icon: Mountain, label: 'Explore' },
     ];
 
-    const trending = ['Nubra Valley', 'Tso Moriri', 'Hanle Observatory'];
-
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setIsDropdownOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const handleSearch = (path) => {
-        setIsDropdownOpen(false);
-        navigate(path);
-    };
-
-    const filteredSuggestions = suggestions.filter(s =>
-        (activeCategory === 'All' || s.type === activeCategory) &&
-        s.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
     return (
-        <div className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden bg-[var(--color-bg)]">
+            {/* Cinematic Background Layer */}
+            <div className="absolute inset-0 z-0">
+                <img
+                    src="https://images.unsplash.com/photo-1544070282-591d487c6ce7?q=80&w=2070&auto=format&fit=crop"
+                    alt="Ladakh Cinematic Mountain"
+                    className="w-full h-full object-cover scale-105"
+                />
+                {/* Precision Overlays for Depth & Readability */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-[var(--color-bg)]" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
 
-            {/* Static Image Background (Yaks in Lush Ladakh Valley) */}
-            <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-[30s] hover:scale-105"
-                style={{ backgroundImage: `url(${heroYakLakeImg})` }}
-            />
+                {/* Atmospheric Glow */}
+                <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[var(--color-secondary)]/5 blur-[120px] rounded-full" />
+            </div>
 
-            {/* Dark Cinematic Overlays */}
-            <div className="absolute inset-0 bg-black/40 z-0" />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-black/10 z-0" />
-
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center mt-12">
-
-                {/* Centered Heading */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
-                    className="text-4xl md:text-5xl lg:text-7xl font-light text-white tracking-wide drop-shadow-2xl mb-6 leading-tight"
-                    style={{ fontFamily: '"Inter", sans-serif' }}
-                >
-                    Ladakh – A Confluence of<br />
-                    <span className="font-extrabold">Culture, Nature & Adventure</span>
-                </motion.h1>
-
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
-                    className="text-lg md:text-2xl text-gray-200 mb-10 max-w-3xl drop-shadow-md font-light"
-                >
-                    Discover hidden villages, mountain campsites, cultural festivals, and immersive Himalayan experiences.
-                </motion.p>
-
-                <motion.button
-                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
-                    onClick={() => {
-                        const searchEl = document.getElementById('search-widget');
-                        if (searchEl) searchEl.scrollIntoView({ behavior: 'smooth' });
-                        else navigate('/explore');
-                    }}
-                    className="bg-gradient-to-r from-[#deba69] to-[#c2984f] hover:from-[#c2984f] hover:to-[#a88241] text-white px-10 py-4 rounded-full font-bold transition-all uppercase tracking-widest shadow-xl shadow-yellow-900/30 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-700/40 mb-14"
-                >
-                    Plan Your Journey
-                </motion.button>
-
-                {/* Interactive Search Bar - Positioned centered below */}
+            <div className="rec-container relative z-10 w-full flex flex-col items-center text-center">
+                {/* Elevated Typography */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.7 }}
-                    className="w-full max-w-3xl relative"
-                    id="search-widget"
-                    ref={dropdownRef}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="mb-12"
                 >
-                    <div className="bg-white/10 backdrop-blur-xl p-2 rounded-full border border-white/20 shadow-2xl flex items-center">
-
-                        {/* Category Selector */}
-                        <select
-                            value={activeCategory}
-                            onChange={(e) => setActiveCategory(e.target.value)}
-                            className="hidden md:block bg-transparent text-white font-bold outline-none border-r border-white/20 pl-6 pr-4 py-3 cursor-pointer"
-                        >
-                            <option className="text-gray-900" value="All">All Categories</option>
-                            <option className="text-gray-900" value="Homestay">Homestays</option>
-                            <option className="text-gray-900" value="Campsite">Campsites</option>
-                            <option className="text-gray-900" value="Event">Events</option>
-                        </select>
-
-                        <div className="flex-1 relative flex items-center px-4">
-                            <Search size={22} className="text-gray-300 mr-3 hidden sm:block" />
-                            <input
-                                type="text"
-                                placeholder="Search Pangong, Hemis Festival..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                onFocus={() => setIsDropdownOpen(true)}
-                                className="w-full bg-transparent text-white placeholder-gray-300 outline-none text-lg py-3"
-                            />
-                        </div>
-
-                        <button onClick={() => isDropdownOpen ? setIsDropdownOpen(false) : setIsDropdownOpen(true)} className="bg-brand-teal hover:bg-brand-teal-light text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold transition-all shadow-lg flex items-center">
-                            Search <ArrowRight size={18} className="ml-2 hidden md:block" />
-                        </button>
-                    </div>
-
-                    {/* Autocomplete Dropdown */}
-                    <AnimatePresence>
-                        {isDropdownOpen && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                                className="absolute top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-50 text-left"
-                            >
-                                <div className="p-4 bg-gray-50 border-b border-gray-100 flex space-x-2 overflow-x-auto no-scrollbar">
-                                    <span className="text-xs font-bold uppercase text-gray-400 py-1.5 flex-shrink-0">Trending:</span>
-                                    {trending.map(t => (
-                                        <button key={t} onClick={() => { setSearchQuery(t); setIsDropdownOpen(true); }} className="text-xs font-bold text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-brand-teal/5 transition-colors flex-shrink-0">
-                                            {t}
-                                        </button>
-                                    ))}
-                                </div>
-
-                                <div className="max-h-64 overflow-y-auto p-2">
-                                    {filteredSuggestions.length > 0 ? (
-                                        filteredSuggestions.map((item, idx) => {
-                                            const Icon = item.icon;
-                                            return (
-                                                <div
-                                                    key={idx} onClick={() => handleSearch(item.path)}
-                                                    className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-2xl cursor-pointer group transition-colors"
-                                                >
-                                                    <div className="flex items-center space-x-4">
-                                                        <div className="p-2 bg-gray-100 group-hover:bg-brand-teal/10 rounded-xl transition-colors">
-                                                            <Icon size={20} className="text-gray-500 group-hover:text-brand-teal" />
-                                                        </div>
-                                                        <div>
-                                                            <h4 className="font-bold text-gray-900">{item.title}</h4>
-                                                            <p className="text-xs text-brand-teal font-medium uppercase tracking-wider">{item.type}</p>
-                                                        </div>
-                                                    </div>
-                                                    <ArrowRight size={16} className="text-gray-300 group-hover:text-brand-teal transition-colors" />
-                                                </div>
-                                            )
-                                        })
-                                    ) : (
-                                        <div className="p-8 text-center text-gray-500">
-                                            No results found for "{searchQuery}". Try "Hemis" or "Pangong".
-                                        </div>
-                                    )}
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-
+                    <span className="inline-block px-4 py-1.5 bg-[var(--color-secondary)]/90 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-6 shadow-glow">
+                        Authentic Territory Explorer
+                    </span>
+                    <h1 className="text-white text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-[0.85] mb-6 drop-shadow-2xl">
+                        Find your next <br />
+                        <span className="text-[var(--color-secondary)] text-glow">Mountain Escape.</span>
+                    </h1>
                 </motion.div>
 
-                {/* Global Statistics */}
-                <div className="absolute bottom-0 left-0 right-0 grid grid-cols-2 md:grid-cols-4 border-t border-white/20 bg-gray-900/60 backdrop-blur-md">
-                    {[
-                        { label: 'Verified Homestays', val: '450+' },
-                        { label: 'Active Campsites', val: '120+' },
-                        { label: 'Upcoming Events', val: '24' },
-                        { label: 'Avg Altitude', val: '11,000 ft' },
-                    ].map((stat, i) => (
-                        <div key={i} className="py-6 px-4 text-center border-r border-white/20 last:border-r-0">
-                            <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.val}</div>
-                            <div className="text-xs text-brand-glacier uppercase tracking-widest">{stat.label}</div>
-                        </div>
-                    ))}
-                </div>
+                {/* Enhanced Search Card - Preserving Layout Exactly */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="w-full max-w-4xl bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-2 md:p-4 border border-white/50"
+                >
+                    {/* Tabs */}
+                    <div className="flex border-b border-gray-100 mb-4 md:mb-6 overflow-x-auto no-scrollbar">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat.id}
+                                onClick={() => setActiveCategory(cat.id)}
+                                className={`flex items-center space-x-3 px-6 md:px-10 py-4 transition-all border-b-4 ${activeCategory === cat.id
+                                    ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-blue-50/50'
+                                    : 'border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                                    }`}
+                            >
+                                <cat.icon size={18} />
+                                <span className="text-sm font-bold uppercase tracking-widest whitespace-nowrap">{cat.label}</span>
+                            </button>
+                        ))}
+                    </div>
 
+                    {/* Inputs */}
+                    <div className="flex flex-col md:flex-row gap-3 px-2 pb-2">
+                        <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="relative group">
+                                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--color-primary)] transition-colors" size={20} />
+                                <input
+                                    type="text"
+                                    placeholder="Search location (e.g. Pangong, Nubra)"
+                                    className="w-full bg-gray-50 border border-gray-100 rounded-xl py-5 pl-14 pr-6 text-sm focus:bg-white focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all font-bold"
+                                />
+                            </div>
+                            <div className="relative group">
+                                <Calendar className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                <input
+                                    type="text"
+                                    placeholder="Select dates"
+                                    className="w-full bg-gray-50 border border-gray-100 rounded-xl py-5 pl-14 pr-6 text-sm focus:bg-white focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all font-bold"
+                                />
+                            </div>
+                        </div>
+                        <button className="bg-[var(--color-primary)] text-white px-10 md:px-16 py-5 rounded-xl font-black uppercase tracking-widest text-sm hover:bg-[var(--color-primary-dark)] transition-all shadow-xl hover:shadow-2xl active:scale-[0.98]">
+                            Search
+                        </button>
+                    </div>
+                </motion.div>
+
+                {/* Subtle Branding/Trust */}
+                <div className="mt-12 flex flex-wrap items-center justify-center gap-6">
+                    <p className="text-white/60 text-[10px] font-black uppercase tracking-widest">Authorized Agency Explorer</p>
+                    <div className="flex items-center space-x-4">
+                        {['Pangong', 'Hunder', 'Zanskar'].map(trend => (
+                            <span key={trend} className="text-white/80 text-xs font-bold hover:text-[var(--color-secondary)] transition-colors cursor-pointer border-b border-white/20 pb-0.5">{trend}</span>
+                        ))}
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     );
 };
 
 export default HeroSection;
+

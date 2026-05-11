@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Map, Tent, Home, TreePine, ChevronDown, Activity, CloudSnow, ShieldAlert, HeartHandshake } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Search, User, Menu, X, Mountain } from 'lucide-react';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [exploreOpen, setExploreOpen] = useState(false); // Dropdown state
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const location = useLocation();
 
     useEffect(() => {
@@ -15,134 +13,92 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Main links grouped into dropdown to save space on Desktop
-    const mainLinks = [
-        { name: 'Home', path: '/' },
-        { name: 'Events', path: '/events' },
-        { name: 'Homestays', path: '/homestays' },
+    const navLinks = [
         { name: 'Campsites', path: '/campsites' },
+        { name: 'Homestays', path: '/homestays' },
+        { name: 'Events', path: '/events' },
+        { name: 'Explore', path: '/explore' },
     ];
-
-    const exploreDropdownLinks = [
-        { name: 'Explore Hub', path: '/explore', icon: Map },
-        { name: 'Activities', path: '/explore', icon: Activity },
-        { name: 'Map Explorer', path: '/explore', icon: Map },
-        { name: 'Travel Guide', path: '/', icon: ShieldAlert },
-        { name: 'Weather', path: '/', icon: CloudSnow },
-        { name: 'SOS', path: '/', icon: HeartHandshake }, // Could trigger SOS modal, but linking is fine
-    ];
-
-    // Determine text colors based on scroll/page
-    const isHomePage = location.pathname === '/';
-    const textColorClasses = isScrolled || !isHomePage ? 'text-gray-600' : 'text-gray-100';
-    const logoColorClasses = isScrolled || !isHomePage ? 'text-gray-900' : 'text-white';
 
     return (
-        <>
-            <nav className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-transparent ${isScrolled ? 'glass shadow-sm border-gray-200/50 py-3' : 'bg-transparent py-5'}`}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center">
-                        {/* Logo */}
-                        <Link to="/" className="flex items-center space-x-2 group">
-                            <div className="w-10 h-10 bg-brand-teal rounded-xl flex items-center justify-center transform group-hover:scale-105 transition-transform">
-                                <Map className="text-white w-6 h-6" />
-                            </div>
-                            <span className={`font-bold text-2xl tracking-tight transition-colors ${logoColorClasses}`}>
-                                Ladakh <span className={`transition-colors ${isScrolled ? 'text-brand-teal' : 'text-white'}`}>Explorer</span>
-                            </span>
-                        </Link>
+        <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${isScrolled
+            ? 'bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-xl py-3'
+            : 'bg-transparent py-6'
+            }`}>
+            {/* Top Vignette for Readability when Transparent */}
+            {!isScrolled && (
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent pointer-events-none -z-10" />
+            )}
+            <div className="rec-container flex items-center justify-between">
 
-                        {/* Desktop Navigation */}
-                        <div className="hidden lg:flex items-center space-x-8">
-                            {mainLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    to={link.path}
-                                    className={`font-medium transition-all hover:text-brand-teal relative group ${textColorClasses}`}
-                                >
-                                    {link.name}
-                                    {/* Animated Hover Underline effect */}
-                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-teal transition-all group-hover:w-full"></span>
-                                </Link>
-                            ))}
-
-                            {/* Dropdown for extra items */}
-                            <div className="relative" onMouseEnter={() => setExploreOpen(true)} onMouseLeave={() => setExploreOpen(false)}>
-                                <button className={`font-medium flex items-center transition-colors hover:text-brand-teal ${textColorClasses}`}>
-                                    Discover <ChevronDown size={16} className={`ml-1 transform transition-transform ${exploreOpen ? 'rotate-180' : ''}`} />
-                                </button>
-
-                                <AnimatePresence>
-                                    {exploreOpen && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                                            className="absolute top-full right-0 mt-4 w-64 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden py-2 z-50"
-                                        >
-                                            <div className="grid grid-cols-1 divide-y divide-gray-50">
-                                                {exploreDropdownLinks.map(dp => {
-                                                    const Icon = dp.icon;
-                                                    return (
-                                                        <Link key={dp.name} to={dp.path} className="flex items-center space-x-3 px-6 py-3 hover:bg-gray-50 text-gray-700 hover:text-brand-teal transition-colors group">
-                                                            <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-brand-teal/10 transition-colors"><Icon size={16} /></div>
-                                                            <span className="font-bold text-sm">{dp.name}</span>
-                                                        </Link>
-                                                    )
-                                                })}
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </div>
-
-                            <button className="bg-brand-teal hover:bg-brand-teal-light text-white px-6 py-2.5 rounded-full font-medium transition-all transform hover:scale-105 shadow-md shadow-brand-teal/20">
-                                Plan Trip
-                            </button>
-                        </div>
-
-                        {/* Mobile menu button */}
-                        <div className="lg:hidden flex items-center">
-                            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className={`p-2 rounded-md ${logoColorClasses}`}>
-                                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                            </button>
+                {/* Cinematic Logo */}
+                <Link to="/" className="flex items-center space-x-3 group">
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-[var(--color-secondary)] blur-md opacity-20 group-hover:opacity-40 transition-opacity" />
+                        <div className={`p-2 rounded-xl transition-all duration-500 ${isScrolled ? 'bg-[var(--color-primary)] shadow-lg' : 'bg-white/10 backdrop-blur-md border border-white/20'}`}>
+                            <Mountain className={`${isScrolled ? 'text-white' : 'text-[var(--color-secondary)]'} group-hover:rotate-12 transition-transform`} size={24} />
                         </div>
                     </div>
+                    <div className="flex flex-col">
+                        <span className={`text-2xl font-black tracking-tighter leading-none ${isScrolled ? 'text-[var(--color-text-primary)]' : 'text-white'} transition-colors`}>
+                            Ladakh <span className="text-[var(--color-secondary)]">Explorer.</span>
+                        </span>
+                        <span className={`text-[8px] font-black uppercase tracking-[0.4em] mt-1 ${isScrolled ? 'text-gray-400' : 'text-white/60'}`}>
+                            Authorized Territory Portal
+                        </span>
+                    </div>
+                </Link>
+
+                {/* Desktop Menu */}
+                <div className="hidden lg:flex items-center space-x-12">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            to={link.path}
+                            className={`text-xs font-black uppercase tracking-[0.2em] transition-all relative py-2 group ${isScrolled ? 'text-[var(--color-text-secondary)]' : 'text-white/90'
+                                } hover:text-[var(--color-secondary)]`}
+                        >
+                            {link.name}
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[var(--color-secondary)] transition-all duration-300 group-hover:w-full" />
+                        </Link>
+                    ))}
+
+                    <Link to="/admin" className="flex items-center space-x-2 text-[var(--color-secondary)] hover:opacity-80 transition-opacity">
+                        <User size={18} />
+                        <span className="text-xs font-black uppercase tracking-widest">Sign In</span>
+                    </Link>
                 </div>
-            </nav>
 
-            {/* Mobile Sidebar */}
-            <AnimatePresence>
-                {mobileMenuOpen && (
-                    <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 20 }} className="fixed inset-y-0 right-0 w-72 bg-white shadow-2xl z-40 flex flex-col overflow-y-auto no-scrollbar">
-                        <div className="pt-24 pb-6 px-6 flex flex-col space-y-2">
-                            {mainLinks.map((link) => (
-                                <Link key={link.name} to={link.path} onClick={() => setMobileMenuOpen(false)} className="text-gray-900 font-bold text-xl py-3 border-b border-gray-50 hover:text-brand-teal transition-colors">
-                                    {link.name}
-                                </Link>
-                            ))}
+                {/* Search Utility */}
+                <div className="flex items-center space-x-6">
+                    <button className={`p-2.5 rounded-full transition-all ${isScrolled ? 'bg-gray-100 text-gray-600 hover:bg-[var(--color-primary)] hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-md'}`}>
+                        <Search size={20} />
+                    </button>
+                    <button
+                        className="lg:hidden"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <X size={28} className={isScrolled ? 'text-gray-900' : 'text-white'} /> : <Menu size={28} className={isScrolled ? 'text-gray-900' : 'text-white'} />}
+                    </button>
+                </div>
+            </div>
 
-                            <h4 className="text-xs uppercase font-bold text-gray-400 tracking-wider pt-6 pb-2">Discover More</h4>
-                            <div className="grid grid-cols-2 gap-2">
-                                {exploreDropdownLinks.map(dp => {
-                                    const Icon = dp.icon;
-                                    return (
-                                        <Link key={dp.name} to={dp.path} onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-brand-teal/30 hover:bg-brand-teal/5 transition-all text-center group">
-                                            <Icon className="w-6 h-6 text-gray-400 group-hover:text-brand-teal mb-2" />
-                                            <span className="text-xs font-bold text-gray-700 group-hover:text-brand-teal">{dp.name}</span>
-                                        </Link>
-                                    )
-                                })}
-                            </div>
-
-                            <div className="pt-8">
-                                <button className="w-full bg-brand-teal text-white px-4 py-4 rounded-xl font-bold shadow-md shadow-brand-teal/20 active:scale-95 transition-all">
-                                    Plan Your Trip
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </>
+            {/* Mobile Menu */}
+            {isMobileMenuOpen && (
+                <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 p-8 space-y-6 shadow-2xl">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            to={link.path}
+                            className="block text-sm font-black uppercase tracking-widest text-gray-400 hover:text-[var(--color-primary)]"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
+                </div>
+            )}
+        </nav>
     );
 };
 

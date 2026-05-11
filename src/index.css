@@ -1,56 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-brand-teal: #0d9488;
-  --color-brand-teal-light: #14b8a6;
-  --color-brand-glacier: #bae6fd;
-  --color-brand-snow: #f8fafc;
-  --color-brand-gray: #475569;
-  --color-brand-beige: #fef08a;
+  /* Cinematic Mountain Palette */
+  --color-primary: #1e3a8a;
+  /* Deep Mountain Blue */
+  --color-primary-dark: #172554;
+  --color-secondary: #d4af37;
+  /* Himalayan Gold */
+  --color-accent: #2d5a27;
+  /* Valley Green */
 
-  --color-bg-primary: var(--color-brand-snow);
-  --color-text-primary: var(--color-brand-gray);
+  /* Backgrounds & Text */
+  --color-bg: #f8fafc;
+  /* Glacier White */
+  --color-bg-offset: #f1f5f9;
+  /* Cold Mist */
+  --color-text-primary: #0f172a;
+  /* Deep Slate */
+  --color-text-secondary: #475569;
+  --color-border: #e2e8f0;
 
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Cinematic Shadows & Depth */
+  --shadow-cinematic: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 20px rgba(212, 175, 55, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-blur: blur(12px);
 }
 
 @layer base {
   body {
-    background-color: var(--color-bg-primary);
-    color: var(--color-text-primary);
-    font-family: var(--font-sans);
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+    @apply antialiased text-[var(--color-text-primary)] bg-[var(--color-bg)];
+    font-family: 'Open Sans', sans-serif;
   }
 }
 
-/* Glassmorphism utilities */
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+@layer components {
+
+  /* Layout Structures */
+  .rec-container {
+    @apply max-w-7xl mx-auto px-6 lg:px-12;
+  }
+
+  .rec-card {
+    @apply bg-white rounded-2xl border border-[var(--color-border)] shadow-sm hover:shadow-cinematic transition-all duration-500 overflow-hidden;
+  }
+
+  /* Button System */
+  .btn-primary {
+    @apply bg-[var(--color-primary)] text-white px-8 py-4 rounded-xl font-bold text-sm tracking-widest uppercase hover:bg-[var(--color-primary-dark)] hover:shadow-lg transition-all active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--color-secondary)] text-white px-8 py-4 rounded-xl font-bold text-sm tracking-widest uppercase hover:opacity-90 hover:shadow-lg transition-all active:scale-95;
+  }
+
+  /* Cinematic Utilities */
+  .cinematic-overlay {
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.6) 100%);
+  }
+
+  .cinematic-gradient-gold {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #172554 100%);
+  }
+
+  .text-glow {
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.3);
+  }
+
+  /* Typography */
+  .rec-heading-1 {
+    @apply text-4xl md:text-6xl font-extrabold tracking-tight text-[var(--color-text-primary)] leading-tight;
+  }
+
+  .rec-heading-2 {
+    @apply text-2xl md:text-3xl font-bold tracking-tight text-[var(--color-text-primary)];
+  }
+
+  .rec-label {
+    @apply text-[10px] md:text-xs font-bold uppercase tracking-[0.1em] text-[var(--color-text-secondary)];
+  }
+
+  /* Navigation Utilities */
+  .nav-blur {
+    @apply bg-white/95 backdrop-blur-md border-b border-[var(--color-border)] sticky top-0 z-[100];
+  }
 }
 
-.glass-dark {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-/* Hide scrollbar for clean UI */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  @apply w-2;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(13, 148, 136, 0.4);
-  border-radius: 4px;
+  @apply bg-gray-300 rounded-full hover:bg-gray-400;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(13, 148, 136, 0.8);
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* No glassmorphism here - just clean, solid surfaces with subtle depth */
